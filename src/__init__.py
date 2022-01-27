@@ -29,34 +29,17 @@ ZIPSTORED = False
 
 
 def patchLibrary():
-    if len(libios[1]) != 0:
-        buffer = (
-            open("Flutter", "rb")
-            .read()
-            .replace(b"192.168.133.104", IPBurp.encode("ascii"))
-        )
-        open("Flutter", "wb").write(buffer)
-    if len(libAppArm64[1]) != 0:
-        buffer = (
-            open("libflutter_arm64.so", "rb")
-            .read()
-            .replace(b"192.168.133.104", IPBurp.encode("ascii"))
-        )
-        open("libflutter_arm64.so", "wb").write(buffer)
-    if len(libAppArm[1]) != 0:
-        buffer = (
-            open("libflutter_arm.so", "rb")
-            .read()
-            .replace(b"192.168.133.104", IPBurp.encode("ascii"))
-        )
-        open("libflutter_arm.so", "wb").write(buffer)
-    if len(libAppX64[1]) != 0:
-        buffer = (
-            open("libflutter_x64.so", "rb")
-            .read()
-            .replace(b"192.168.133.104", IPBurp.encode("ascii"))
-        )
-        open("libflutter_x64.so", "wb").write(buffer)
+    for a, b in [
+        (libios, "Flutter"),
+        (libAppArm64, "libflutter_arm64.so"),
+        (libAppArm, "libflutter_arm.so"),
+        (libAppX64, "libflutter_x64.so")
+        ]:
+
+        if len(a[1]) != 0:
+            print(f"Replacing IP address in {b}")
+            buffer = open(b, "rb").read().replace(b"192.168.133.104", IPBurp.encode("ascii"))
+            open(b, "wb").write(buffer)
 
 
 def inputIPBurp():
@@ -114,6 +97,7 @@ def networkLib():
             libAppArm = "", ""
             notexcept("libflutter_arm.so")
     if len(libAppX64[1]) != 0:
+        print("Trying libAppX64", libAppX64[1])
         try:
             urlretrieve(
                 "https://github.com/ptswarm/reFlutter/releases/download/android-"
@@ -174,6 +158,7 @@ def convertIPFix():
 
 
 def notexcept(filename):
+    print("Deleting", filename)
     try:
         os.remove(filename)
     except:
@@ -222,6 +207,8 @@ def replaceLibFlutter():
         checkHash()
         inputIPBurp()
         networkLib()
+        print("exiting")
+        exit()
     if (
         os.path.exists("libflutter_arm64.so")
         or os.path.exists("libflutter_arm.so")
@@ -521,3 +508,7 @@ def main():
                         patchSource(libappHash, abs(i))
     except (IndexError, ValueError) as e:
         print("USAGE:\nreflutter your.(apk)|(ipa)")
+
+
+if __name__ == "__main__":
+    main()
