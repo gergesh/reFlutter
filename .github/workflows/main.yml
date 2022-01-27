@@ -4,7 +4,10 @@ on:
   pull_request:
     branches:
       - '*'
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      idk:
+        required: false
 
 jobs:
   build-android:
