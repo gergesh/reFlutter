@@ -14,7 +14,9 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Check out repository od
-        uses: actions/checkout@android-e4a09dbf2bb120fe4674e0576617a0dc
+        uses: actions/checkout@v2
+        with:
+          ref: e4a09dbf2bb120fe4674e0576617a0dc
       - name: Set variables
         run: |
          HASH=$(cat SNAPSHOT_HASH)
