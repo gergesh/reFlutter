@@ -100,7 +100,7 @@ def networkLib():
         print("Trying libAppX64", libAppX64[1])
         try:
             urlretrieve(
-                "https://github.com/ptswarm/reFlutter/releases/download/android-"
+                "https://github.com/gergesh/reFlutter/releases/download/android-"
                 + libAppX64[1]
                 + "/libflutter_x64.so",
                 "libflutter_x64.so",
@@ -207,8 +207,6 @@ def replaceLibFlutter():
         checkHash()
         inputIPBurp()
         networkLib()
-        print("exiting")
-        exit()
     if (
         os.path.exists("libflutter_arm64.so")
         or os.path.exists("libflutter_arm.so")
@@ -313,11 +311,13 @@ def patchSource(hashS, ver):
         "snapshot_hash = MakeSnapshotHashString()",
         "snapshot_hash = '" + hashS + "'",
     )
+    """
     replaceFileText(
         "src/third_party/dart/runtime/bin/socket.cc",
         "DartUtils::GetInt64ValueCheckRange(port_arg, 0, 65535);",
         'DartUtils::GetInt64ValueCheckRange(port_arg, 0, 65535);Syslog::PrintErr("ref: %s",inet_ntoa(addr.in.sin_addr));if(port>50){port=8083;addr.addr.sa_family=AF_INET;addr.in.sin_family=AF_INET;inet_aton("192.168.133.104", &addr.in.sin_addr);}',
     )
+    """
     replaceFileText(
         "src/third_party/boringssl/src/ssl/ssl_x509.cc",
         "static bool ssl_crypto_x509_session_verify_cert_chain(SSL_SESSION *session,\n                                                      SSL_HANDSHAKE *hs,\n                                                      uint8_t *out_alert) {",
